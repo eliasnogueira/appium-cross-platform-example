@@ -18,7 +18,7 @@ public class TipTest {
 	private AppiumDriver<?> driver;
 	
 	@Before
-	public void setUp() throws MalformedURLException {
+	public void setUp() throws Exception {
 		driver = Utils.returnDriver(Utils.readProperty("run.platform"));
 	}
 	

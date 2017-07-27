@@ -4,7 +4,19 @@
 	<groupId>com.eliasogueira</groupId>
 	<artifactId>appium-crossplatform</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Appium Cross Platform Example</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <name>Appium Cross Platform Example</name>
 
 	<properties>
 		<appium.version>5.0.0-BETA4</appium.version>

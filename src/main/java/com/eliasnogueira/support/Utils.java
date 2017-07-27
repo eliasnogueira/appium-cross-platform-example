@@ -20,7 +20,7 @@ import io.appium.java_client.remote.MobilePlatform;
 public class Utils {
 
 	public static String readProperty(String property) {
-		Properties prop = null;
+		Properties prop;
 		String value = null;
 		try {
 			prop = new Properties();
@@ -28,14 +28,10 @@ public class Utils {
 			
 			value = prop.getProperty(property);
 			
-			if (value == null || value == "") {
+			if (value == null || value.isEmpty()) {
 				throw new Exception("Value not set or empty");
 			}
 			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -44,29 +40,30 @@ public class Utils {
 	}
 	
 	
-	public static AppiumDriver<?> returnDriver(String platform) throws MalformedURLException {
-		AppiumDriver<?> driver = null;
+	public static AppiumDriver<?> returnDriver(String platform) throws Exception {
+		AppiumDriver<?> driver;
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		
-		if (Boolean.parseBoolean(Utils.readProperty("run.hybrid")) == true) {
+		if (Boolean.parseBoolean(Utils.readProperty("run.hybrid"))) {
 			capabilities.setCapability(MobileCapabilityType.AUTO_WEBVIEW, true);
 		}
 		
-		String completURL = "http://" + Utils.readProperty("run.ip") + ":" + Utils.readProperty("run.port") + "/wd/hub";
+		String completeURL = "http://" + Utils.readProperty("run.ip") + ":" + Utils.readProperty("run.port") + "/wd/hub";
 		
 		switch (platform.toLowerCase()) {
 		
 		case "ios":
 			capabilities.setCapability(MobileCapabilityType.APP, new File(Utils.readProperty("app.ios.path")).getAbsolutePath());
-			capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, Utils.readProperty("device.android.name"));
-			capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, Utils.readProperty("platform.android.version"));
+			capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, Utils.readProperty("device.ios.name"));
+			capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, Utils.readProperty("platform.ios.version"));
 			capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
+			capabilities.setCapability(MobileCapabilityType.PLATFORM, MobilePlatform.IOS);
 			
-			if ( Boolean.parseBoolean(Utils.readProperty("platform.ios.xcode8")) == true) {
+			if ( Boolean.parseBoolean(Utils.readProperty("platform.ios.xcode8"))) {
 				capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "XCUITest");
 			}
 			
-			driver = new IOSDriver<RemoteWebElement>(new URL(completURL), capabilities);
+			driver = new IOSDriver<RemoteWebElement>(new URL(completeURL), capabilities);
 			break;
 
 		case "android":
@@ -74,12 +71,13 @@ public class Utils {
 			capabilities.setCapability(MobileCapabilityType.APP, new File(Utils.readProperty("app.android.path")).getAbsolutePath());
 			capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, Utils.readProperty("device.android.name"));
 			capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
+			capabilities.setCapability(MobileCapabilityType.PLATFORM, MobilePlatform.ANDROID);
 			
-			driver = new AndroidDriver<RemoteWebElement>(new URL(completURL), capabilities);
+			driver = new AndroidDriver<RemoteWebElement>(new URL(completeURL), capabilities);
 			break;
 			
 		default:
-			break;
+			throw new Exception("Platform not supported");
 		}
 		
 		return driver;

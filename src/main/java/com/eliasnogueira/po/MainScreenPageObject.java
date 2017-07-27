@@ -17,6 +17,7 @@ public class MainScreenPageObject {
 	@AndroidFindBy(id = "org.traeg.fastip:id/billAmtEditText")
 	@iOSFindBy(xpath = "//XCUIElementTypeApplication[1]/XCUIElementTypeWindow[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeTextField[1]")
 	@FindBy(id = "billAmount")
+	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	MobileElement billAmount;
 	
 	@AndroidFindBy(id = "org.traeg.fastip:id/calcTipButton")
