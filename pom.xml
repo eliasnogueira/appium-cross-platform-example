@@ -21,7 +21,7 @@
 	<properties>
 		<appium.version>5.0.0-BETA4</appium.version>
 		<selenium.version>3.2.0</selenium.version>
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.1</junit.version>
 	</properties>
 
 	<dependencies>
